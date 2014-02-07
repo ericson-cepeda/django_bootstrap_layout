@@ -4,29 +4,29 @@ angular.element(document).ready(function(){
 
 /* global angular */
 
-var {{ project_name }} = {
-    {{ project_name }}General : "/",
-    {{ project_name }}Addresses : {
+var Main = {
+    mainGeneral : "/",
+    mainAddresses : {
         "main":							{"name":"main"}
     },
-    module: angular.module('{{ project_name }}', ['ngRoute', 'ui.router', 'ngResource', "google-maps", 'angularSmoothscroll'], function($routeProvider, $locationProvider) {
+    module: angular.module('Main', ['ngRoute', 'ui.router', 'ngResource', "google-maps", 'angularSmoothscroll'], function($routeProvider, $locationProvider) {
         $locationProvider.html5Mode(true);
     }),
     init: function(){
 
-        {{ project_name }}.module
+        Main.module
             .config(function($interpolateProvider, $stateProvider, $urlRouterProvider) {
                 $interpolateProvider.startSymbol('{[{');
                 $interpolateProvider.endSymbol('}]}');
 
                 // Now set up the states
-                {{ project_name }}.populatedStateProvider({{ project_name }}.{{ project_name }}Addresses, {{ project_name }}.{{ project_name }}General, "/render_page/", $stateProvider, "mainView", "")
+                Main.populatedStateProvider(Main.mainAddresses, Main.mainGeneral, "/render_page/", $stateProvider, "mainView", "")
 
                 // For any unmatched url, send to /route1
                 $urlRouterProvider.otherwise("/main/")
 
             })
-            .controller('{{ project_name }}Ctrl', {{ project_name }}.{{ project_name }}Ctrl)
+            .controller('MainCtrl', Main.MainCtrl)
     },
     populatedStateProvider: function(referenceHash, baseUrl, renderUrl, $stateProvider, referenceView, parentState){
         for (var key in referenceHash) {
@@ -54,9 +54,9 @@ var {{ project_name }} = {
         }
         return $stateProvider
     },
-    {{ project_name }}Ctrl: function ($scope, $log, $location, $timeout, $document) {
+    MainCtrl: function ($scope, $log, $location, $resource) {
 
-        var render = function(toState){
+        var render = function(toState, toParams){
 
             switch ($scope.stateName){
                 case "main":
@@ -90,7 +90,7 @@ var {{ project_name }} = {
 }
 
 
-{{ project_name }}.init()
+Main.init()
 
 
 

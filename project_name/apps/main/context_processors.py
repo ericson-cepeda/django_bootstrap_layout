@@ -1,5 +1,4 @@
 import re
-from django.core import signing
 
 def myurl( request ):
     re_domain = re.compile(r"(\w+\.)?([\w-]+)(\.(com|ir))?(:\d+)?")

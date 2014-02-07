@@ -20,8 +20,8 @@ class LazyEncoder(json.JSONEncoder):
             return force_unicode(obj)
         return obj
 
-def http_response(json={}):
-    return HttpResponse(json.dumps(json, cls=LazyEncoder), content_type="application/json")
+def http_response(json_dict={}):
+    return HttpResponse(json.dumps(json_dict, cls=LazyEncoder), content_type="application/json")
 
 
 class Pages:
@@ -32,7 +32,7 @@ class Pages:
         return {}
 
 def home(request):
-    return render(request, "main/base-general.jade", {})
+    return render(request, "main/base_general.jade", {})
 
 def render_page(request, page_requested):
     try:

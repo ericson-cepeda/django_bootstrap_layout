@@ -1,0 +1,7 @@
+*.pyc
+*.egg-info
+docs/_build
+.idea/
+.project
+.pydevproject
+*.mo

@@ -130,7 +130,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.static",
     "django.core.context_processors.tz",
     "django.contrib.messages.context_processors.messages",
-    '{{ proejct_name }}.apps.main.context_processors.myurl',
+    '{{ project_name }}.apps.main.context_processors.myurl',
 )
 TEMPLATE_LOADERS = (
     ('pyjade.ext.django.Loader',(
