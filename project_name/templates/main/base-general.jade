@@ -1,0 +1,50 @@
+- load i18n
+- load django_static
+- get_current_language as the_language
+- get_language_info for LANGUAGE_CODE as lang
+!!!
+html(lang="{{ lang.code }}", ng-app="{{ project_name }}", ng-controller="{{ project_name }}Ctrl")
+    head
+        meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
+        meta(name='description', content="")
+        meta(name='viewport', content='width=1280, initial-scale=1.0')
+        meta(name='keywords', content='')
+        - slimall
+        link(rel='stylesheet', href='/bootstrap/css/bootstrap.min.css')
+        - endslimall
+        link(rel='stylesheet', href='/static/fontawesome/css/font-awesome.min.css')
+        - slimall
+        script(type='text/javascript', src='/jquery/js/jquery.min.js')
+        script(type='text/javascript', src='/bootstrap/js/bootstrap.min.js')
+        - endslimall
+        title {{ project_name }}
+    body
+        #containers(data-target='#navbar')
+            #header.navbar.navbar-fixed-top
+                .navbar-inner
+                    .container
+                        span.brand.{{ project_name }}
+                        ul.nav.pull-right
+                            li(smooth-scroll, target='services')
+                                a(ng-href="#")
+                                    small.dark-brownie-font {{ project_name }}
+                    - get_language_info_list for LANGUAGES as languages
+                    - for language in languages
+                        a.language-selector(language-item, ng-href="{[{ currentPath }]}?lang={{ language.code }}", target="_self")
+                            small.to-uppercase {{ language.code }}
+            #main_view(ui-view="mainView")
+                - block content
+                - endblock
+
+        script(type='text/javascript', src="//maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&language=en")
+        script(type='text/javascript', src='//ajax.googleapis.com/ajax/libs/angularjs/1.2.2/angular.min.js')
+        - slimall
+        script(type='text/javascript', src="/angularjs/js/route.js")
+        script(type='text/javascript', src="/angularjs/js/angular-ui-router.min.js")
+        script(type='text/javascript', src='/angularjs/js/resource.js')
+        script(type='text/javascript', src='/angularjs/js/angular-google-maps.js')
+        script(type='text/javascript', src='/angularjs/js/angular-smooth-scroll.js')
+        - endslimall
+        - slimall
+        script(type='text/javascript', src='/main/js/general.js')
+        - endslimall
