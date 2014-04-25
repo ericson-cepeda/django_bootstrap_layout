@@ -16,6 +16,32 @@ var Main = {
     }),
     init: function(){
         Main.module
+            .factory('httpInterceptor', function ($q, $rootScope, $log) {
+                var numLoadings = 0;
+
+                return {
+                    request: function (config) {
+                        numLoadings++;
+                        // Show loader
+                        $rootScope.$broadcast("loader_show");
+                        return config || $q.when(config)
+                    },
+                    response: function (response) {
+                        if ((--numLoadings) === 0) {
+                            // Hide loader
+                            $rootScope.$broadcast("loader_hide");
+                        }
+                        return response || $q.when(response);
+                    },
+                    responseError: function (response) {
+                        if (!(--numLoadings)) {
+                            // Hide loader
+                            $rootScope.$broadcast("loader_hide");
+                        }
+                        return $q.reject(response);
+                    }
+                };
+            })
             .config(function($interpolateProvider, $stateProvider, $urlRouterProvider, $httpProvider) {
                 $interpolateProvider.startSymbol('{$');
                 $interpolateProvider.endSymbol('$}');
@@ -26,32 +52,29 @@ var Main = {
                 // For any unmatched url, send to /route1
                 $urlRouterProvider.otherwise("/main/")
 
-                var numLoadings = 0;
-                var loadingScreen = $('<div style="position:fixed;top:0;left:0;right:0;bottom:0;z-index:10000;background-color:gray;background-color:rgba(70,70,70,0.2);"><i style="position:absolute;top:50%;left:50%;font-size:50px;color:gray;" class="icon-spinner icon-spin icon-large" /></div>')
-                    .appendTo($('body')).hide();
-                $httpProvider.responseInterceptors.push(function($rootScope) {
-                    return function(promise) {
-                        numLoadings++;
-                        loadingScreen.show();
-                        if ($rootScope.stateName != $rootScope.stateNamePrev)
-                            $_('#content_view').addClass('loading')
-                        var hide = function(r) {
-                            if (!(--numLoadings)){
-                                loadingScreen.hide();
-                                if ($rootScope.stateName != $rootScope.stateNamePrev)
-                                   $_('#content_view').removeClass('loading')
-                            }
-                            return r;
-                        };
-                        return promise.then(hide, hide);
-                    };
-                });
+                $_('<div loader style="position:fixed;top:0;left:0;right:0;bottom:0;z-index:10000;background-color:gray;background-color:rgba(70,70,70,0.2);"><i style="position:absolute;top:50%;left:50%;font-size:50px;color:gray;" class="fa fa-spinner fa-spin" /></div>')
+                    .appendTo($_('body')).hide();
+                $httpProvider.interceptors.push('httpInterceptor');
 
             })
             .filter('split', function() {
                 return function(input, splitChar) {
                     return input.split(splitChar);
                 }
+            })
+            .directive("loader", function ($rootScope) {
+                return function ($scope, element, attrs) {
+                    $scope.$on("loader_show", function () {
+                        if ($rootScope.stateName != $rootScope.stateNamePrev)
+                            $_('#main_view').addClass('loading')
+                        return element.show();
+                    });
+                    return $scope.$on("loader_hide", function () {
+                        if ($rootScope.stateName != $rootScope.stateNamePrev)
+                            $_('#main_view').removeClass('loading')
+                        return element.hide();
+                    });
+                };
             })
             .controller('MainCtrl', Main.MainCtrl)
     },
@@ -97,7 +120,7 @@ var Main = {
 
             switch ($scope.stateName){
                 case "main":
-                        $scope.aux_data = $rootScope.aux_data
+                    $scope.aux_data = $rootScope.aux_data
                     break;
             }
         }
