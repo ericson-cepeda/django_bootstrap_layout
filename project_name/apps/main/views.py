@@ -32,7 +32,7 @@ class Pages:
         return {}
 
 
-def home(request):
+def general(request):
     return render(request, "main/base_general.jade", {})
 
 
