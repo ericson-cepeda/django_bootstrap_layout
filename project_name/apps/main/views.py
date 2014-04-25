@@ -31,25 +31,27 @@ class Pages:
     def main(self, request, page_requested):
         return {}
 
-def home(request):
+
+def general(request):
     return render(request, "main/base_general.jade", {})
 
+
 def render_page(request, page_requested):
-    try:
-        the_file = "main/{0}.jade".format(page_requested)
-        with open(os.path.join(PROJECT_DIR, 'templates', the_file)):
-            variables = dict()
-            return render(request, the_file, variables)
-    except IOError:
+    the_file = "main/{0}.jade".format(page_requested)
+    if os.path.isfile(os.path.join(PROJECT_DIR, 'templates', the_file)):
+        variables = dict()
+        return render(request, the_file, variables)
+    else:
         return render(request, "main/{0}.jade".format("coming_soon"), {})
 
-def render_content(request, page_requested):
+
+def render_data(request, page_requested):
     pages = Pages()
     variables = dict()
     if page_requested in dir(pages):
         variables['aux_data'] = getattr(pages, page_requested)(request, page_requested)
         return http_response(variables)
     return http_response({
-                "aux_data": variables
+        "aux_data": variables
     })
 
