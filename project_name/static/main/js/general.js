@@ -16,7 +16,7 @@ var Main = {
     }),
     init: function(){
         Main.module
-            .config(function($interpolateProvider, $stateProvider, $urlRouterProvider) {
+            .config(function($interpolateProvider, $stateProvider, $urlRouterProvider, $httpProvider) {
                 $interpolateProvider.startSymbol('{$');
                 $interpolateProvider.endSymbol('$}');
 
@@ -35,7 +35,6 @@ var Main = {
                         loadingScreen.show();
                         if ($rootScope.stateName != $rootScope.stateNamePrev)
                             $_('#content_view').addClass('loading')
-                        console.log($rootScope)
                         var hide = function(r) {
                             if (!(--numLoadings)){
                                 loadingScreen.hide();
@@ -92,7 +91,7 @@ var Main = {
         }
         return $stateProvider
     },
-    MainCtrl: function ($scope, $log, $location, $resource) {
+    MainCtrl: function ($rootScope, $scope, $log, $location) {
 
         var render = function(toState, toParams){
 
