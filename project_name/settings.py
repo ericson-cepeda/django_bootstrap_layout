@@ -140,6 +140,34 @@ TEMPLATE_LOADERS = (
     )),
 )
 
+#PIPELINE_COFFEE_SCRIPT_BINARY = '/app/bin/coffee'
+#PIPELINE_STYLUS_BINARY = '/app/bin/stylus'
+PIPELINE_COMPILERS = (
+    'pipeline.compilers.stylus.StylusCompiler',
+    'pipeline.compilers.coffee.CoffeeScriptCompiler',
+)
+
+PIPELINE_CSS = {
+    'links': {
+        'source_filenames': (
+          '{{ project_name }}/styl/*.styl'
+        ),
+        'output_filename': '{{ project_name }}/css/compressed.css',
+        'extra_context': {
+            'media': 'screen,projection',
+        },
+    },
+}
+
+PIPELINE_JS = {
+    'scripts': {
+        'source_filenames': (
+          '{{ project_name }}/coffee/*.coffee',
+        ),
+        'output_filename': '{{ project_name }}/js/compressed.js',
+    }
+}
+
 INSTALLED_APPS = (
     #'south',
     'django.contrib.auth',
@@ -148,6 +176,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'pipeline',
     'django_static',
     'pyjade.ext.django',
     'kronos',

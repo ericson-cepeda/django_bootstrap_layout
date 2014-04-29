@@ -1,4 +1,5 @@
 - load i18n
+- load compressed
 - load django_static
 - get_current_language as the_language
 - get_language_info for LANGUAGE_CODE as lang
@@ -47,5 +48,8 @@ html(lang="{{ lang.code }}", ng-app="Main", ng-controller="MainCtrl")
         script(type='text/javascript', src='/angularjs/js/angular-smooth-scroll.js')
         - endslimall
         - slimall
-        script(type='text/javascript', src='/main/js/general.js')
+        - compressed_js 'scripts'
+        - endslimall
+        - slimall
+        - compressed_css 'links'
         - endslimall
