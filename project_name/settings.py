@@ -14,7 +14,7 @@ MANAGERS = ADMINS
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.4/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -76,17 +76,20 @@ LOGIN_REDIRECT_URL = '/'
 STATIC_URL = '/static/'
 MEDIA_URL = '/uploads/'
 
-STATIC_ROOT = '/tmp/cache-{{ project_name }}-root'
-MEDIA_ROOT = os.path.join(PROJECT_DIR, 'static')
+STATIC_ROOT = '/tmp/cache-{{ project_name }}'
+MEDIA_ROOT = os.path.join(PROJECT_DIR, 'media')
 
 DJANGO_STATIC = True
 DJANGO_STATIC_NAME_PREFIX = '/static'
-DJANGO_STATIC_SAVE_PREFIX = '/tmp/cache-{{ project_name }}'
+DJANGO_STATIC_SAVE_PREFIX = STATIC_ROOT
+#DJANGO_STATIC_MEDIA_URL = DJANGO_STATIC_SAVE_PREFIX
 
 # Additional locations of static files
+DJANGO_STATIC_MEDIA_ROOTS = (
+    STATIC_ROOT,
+)
 STATICFILES_DIRS = (
-    DJANGO_STATIC_SAVE_PREFIX,
-    MEDIA_ROOT,
+    os.path.join(PROJECT_DIR, 'static'),
 )
 
 # List of finder classes that know how to find static files in
@@ -140,8 +143,10 @@ TEMPLATE_LOADERS = (
     )),
 )
 
-#PIPELINE_COFFEE_SCRIPT_BINARY = '/app/bin/coffee'
-#PIPELINE_STYLUS_BINARY = '/app/bin/stylus'
+#PIPELINE_COFFEE_SCRIPT_BINARY = '/node_modules/.bin/coffee'
+#PIPELINE_STYLUS_BINARY = '/node_modules/.bin/stylus'
+#PIPELINE_YUGLIFY_BINARY = '/node_modules/.bin/yuglify'
+STATICFILES_STORAGE = 'pipeline.storage.PipelineStorage'
 PIPELINE_COMPILERS = (
     'pipeline.compilers.stylus.StylusCompiler',
     'pipeline.compilers.coffee.CoffeeScriptCompiler',
@@ -150,9 +155,10 @@ PIPELINE_COMPILERS = (
 PIPELINE_CSS = {
     'links': {
         'source_filenames': (
-          '{{ project_name }}/styl/*.styl'
+            '{{ project_name }}/styl/*.styl',
+            'main/styl/*.styl',
         ),
-        'output_filename': '{{ project_name }}/css/compressed.css',
+        'output_filename': os.path.join('{{ project_name }}', 'css', 'compressed.css'),
         'extra_context': {
             'media': 'screen,projection',
         },
@@ -162,9 +168,10 @@ PIPELINE_CSS = {
 PIPELINE_JS = {
     'scripts': {
         'source_filenames': (
-          '{{ project_name }}/coffee/*.coffee',
+            '{{ project_name }}/coffee/*.coffee',
+            'main/coffee/*.coffee',
         ),
-        'output_filename': '{{ project_name }}/js/compressed.js',
+        'output_filename': os.path.join('{{ project_name }}', 'js', 'compressed.js'),
     }
 }
 
