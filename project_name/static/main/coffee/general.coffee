@@ -78,7 +78,7 @@ Main =
     for key of referenceHash
       if referenceHash.hasOwnProperty(key)
         completeUrl = baseUrl + referenceHash[key].name
-        completeUrl += referenceHash[key]["additional_variables"]  if referenceHash[key].hasOwnProperty("additional_variables")
+        completeUrl += '/:'+referenceHash[key]["additional_variables"].join '/:' if referenceHash[key].hasOwnProperty("additional_variables")
         completeUrl += "/"
         stateHash =
           url: completeUrl # root route
