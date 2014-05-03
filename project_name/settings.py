@@ -143,9 +143,9 @@ TEMPLATE_LOADERS = (
     )),
 )
 
-#PIPELINE_COFFEE_SCRIPT_BINARY = '/node_modules/.bin/coffee'
-#PIPELINE_STYLUS_BINARY = '/node_modules/.bin/stylus'
-#PIPELINE_YUGLIFY_BINARY = '/node_modules/.bin/yuglify'
+PIPELINE_COFFEE_SCRIPT_BINARY = os.path.join(os.path.dirname(PROJECT_DIR), 'node_modules', '.bin', 'coffee')
+PIPELINE_STYLUS_BINARY = os.path.join(os.path.dirname(PROJECT_DIR), 'node_modules', '.bin', 'stylus')
+PIPELINE_YUGLIFY_BINARY = os.path.join(os.path.dirname(PROJECT_DIR), 'node_modules', '.bin', 'yuglify')
 STATICFILES_STORAGE = 'pipeline.storage.PipelineStorage'
 PIPELINE_COMPILERS = (
     'pipeline.compilers.stylus.StylusCompiler',

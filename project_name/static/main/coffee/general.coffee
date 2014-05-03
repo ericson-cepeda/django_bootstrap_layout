@@ -9,6 +9,11 @@ Main =
   mainAddresses:
     main:
       name: "main"
+    test:
+      name: 'test',
+      additional_variables: [
+          'test'
+      ]
 
   module: angular.module("Main", [
     "ngRoute"
