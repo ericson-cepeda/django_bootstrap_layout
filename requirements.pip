@@ -1,4 +1,5 @@
+django
 django-static
 pyjade
-kronos
 django-pipeline
+jsmin

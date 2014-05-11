@@ -81,7 +81,7 @@ MEDIA_ROOT = os.path.join(PROJECT_DIR, 'media')
 
 DJANGO_STATIC = True
 DJANGO_STATIC_NAME_PREFIX = '/static'
-DJANGO_STATIC_SAVE_PREFIX = STATIC_ROOT
+DJANGO_STATIC_SAVE_PREFIX = os.path.join(PROJECT_DIR, 'static') if DEBUG else STATIC_ROOT
 #DJANGO_STATIC_MEDIA_URL = DJANGO_STATIC_SAVE_PREFIX
 
 # Additional locations of static files
@@ -145,8 +145,11 @@ TEMPLATE_LOADERS = (
 
 PIPELINE_COFFEE_SCRIPT_BINARY = os.path.join(os.path.dirname(PROJECT_DIR), 'node_modules', '.bin', 'coffee')
 PIPELINE_STYLUS_BINARY = os.path.join(os.path.dirname(PROJECT_DIR), 'node_modules', '.bin', 'stylus')
-PIPELINE_YUGLIFY_BINARY = os.path.join(os.path.dirname(PROJECT_DIR), 'node_modules', '.bin', 'yuglify')
-STATICFILES_STORAGE = 'pipeline.storage.PipelineStorage'
+PIPELINE_CSSMIN_BINARY = os.path.join(os.path.dirname(PROJECT_DIR), 'node_modules', '.bin', 'cssmin')
+STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
+
+PIPELINE_JS_COMPRESSOR = 'pipeline.compressors.jsmin.JSMinCompressor'
+PIPELINE_CSS_COMPRESSOR = 'pipeline.compressors.cssmin.CSSMinCompressor'
 PIPELINE_COMPILERS = (
     'pipeline.compilers.stylus.StylusCompiler',
     'pipeline.compilers.coffee.CoffeeScriptCompiler',
